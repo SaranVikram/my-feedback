@@ -31,7 +31,7 @@ Client.prototype.cleanUp = function () {
     Mobile: this.data.Mobile.trim(),
     Email: this.data.Email.trim(),
     URL: this.data.URL.trim(),
-    imagePath: this.file.filename,
+    imagePath: this.file.filename.trim(),
     createdDate: new Date(),
     email: this.userDetails.email,
     Author: new ObjectID(this.userDetails._id),

@@ -6,6 +6,11 @@ const MongoStore = require("connect-mongo")(session);
 const cors = require("cors");
 const app = express();
 
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.use("/api", require("./router-api"));
+
 let sessionOptions = session({
   secret: "javascript is so cool",
   store: new MongoStore({ client: require("./db") }),
@@ -25,9 +30,6 @@ const router = require("./router");
 
 // This middleware is used to enable Cross Origin Resource Sharing This sets Headers to allow access to our client application
 app.use(cors());
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 app.use(express.static("public"));
 app.set("views", "views");

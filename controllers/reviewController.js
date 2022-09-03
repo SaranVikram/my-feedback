@@ -539,3 +539,14 @@ exports.saveReview = function (req, res) {
       res.send("unsuccesful");
     });
 };
+
+//get Client private feedback
+exports.apiGetReviewsByCompanyName = function (req, res) {
+  Review.getPrivateFeedback(req.company)
+    .then((reviews) => {
+      res.json(reviews);
+    })
+    .catch((e) => {
+      res.json("cannot find private feedback with the associated company");
+    });
+};

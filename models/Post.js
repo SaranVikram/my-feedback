@@ -1,10 +1,18 @@
 const clientCollection = require("../db").db().collection("clients");
 const ObjectID = require("mongodb").ObjectID;
-let Client = function (data, file, userDetails) {
+const md5 = require("md5");
+
+let Client = function (data, file, userDetails, getAvatar) {
   this.data = data;
   this.file = file;
   this.userDetails = userDetails;
   this.errors = [];
+  if (getAvatar == undefined) {
+    getAvatar = false;
+  }
+  if (getAvatar) {
+    this.getAvatar();
+  }
 };
 
 Client.prototype.cleanUp = function () {
@@ -30,7 +38,7 @@ Client.prototype.cleanUp = function () {
     company: this.data.company.trim(),
     Mobile: this.data.Mobile.trim(),
     Email: this.data.Email.trim(),
-    URL: this.data.URL.trim(),
+    URL: `https://search.google.com/local/writereview?placeid=${this.data.URL}`.trim(),
     imagePath: this.file.filename.trim(),
     createdDate: new Date(),
     email: this.userDetails.email,
@@ -64,6 +72,7 @@ Client.prototype.create = function () {
       clientCollection
         .insertOne(this.data)
         .then(() => {
+          this.getAvatar();
           resolve();
         })
         .catch(() => {
@@ -76,35 +85,42 @@ Client.prototype.create = function () {
 };
 
 Client.findingSingleById = function (id) {
-  return new Promise(async function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     if (typeof id != "string" || !ObjectID.isValid(id)) {
       reject();
       return;
     }
-    let clients = await clientCollection
-      .aggregate([
-        { $match: { _id: new ObjectID(id) } },
-        {
-          $lookup: {
-            from: "users",
-            localField: "Author",
-            foreignField: "_id",
-            as: "authorDocument",
-          },
-        },
-        // {project: {
-        //     title: 1,
-        //     body: 1,
-        //     createdDate: 1,
-        //     Author: {$arrayElemAt: ["$authorDocument", 0]}
-        // }}
-      ])
-      .toArray();
-    if (clients.length) {
-      resolve(clients[0]);
-    } else {
-      reject();
-    }
+    clientCollection
+      .findOneAndUpdate({ _id: new ObjectID(id) }, { $inc: { pageVisits: 1 } })
+      .then((data) => {
+        resolve(data.value);
+      })
+      .catch((err) => {
+        reject();
+      });
+    // .aggregate([
+    //   { $match: { _id: new ObjectID(id) } },
+    //   // {
+    //   //   $lookup: {
+    //   //     from: "users",
+    //   //     localField: "Author",
+    //   //     foreignField: "_id",
+    //   //     as: "authorDocument",
+    //   //   },
+    //   // },
+    //   // {project: {
+    //   //     title: 1,
+    //   //     body: 1,
+    //   //     createdDate: 1,
+    //   //     Author: {$arrayElemAt: ["$authorDocument", 0]}
+    //   // }}
+    // ])
+    // .toArray();
+    // if (clients.length) {
+    //   resolve(clients[0]);
+    // } else {
+    //   reject();
+    // }
   });
 };
 
@@ -131,6 +147,47 @@ Client.findByUserId = function (userId) {
       ])
       .toArray();
     resolve(posts);
+  });
+};
+
+Client.prototype.login = function () {
+  return new Promise((resolve, reject) => {
+    clientCollection
+      .findOne({ name: this.data.username })
+      .then((attemptedUser) => {
+        if (attemptedUser && this.data.password === attemptedUser.Mobile) {
+          this.data = attemptedUser;
+          this.getAvatar();
+          resolve("Congrats!");
+        } else {
+          reject("Invalid username / password.");
+        }
+      })
+      .catch(function (e) {
+        reject("Please try again later.");
+      });
+  });
+};
+
+Client.prototype.getAvatar = function () {
+  this.avatar = `https://gravatar.com/avatar/${md5(this.data.Email)}?s=128`;
+};
+
+//check if client exists
+Client.prototype.findByCompany = function () {
+  return new Promise((resolve, reject) => {
+    if (typeof this.data != "string") {
+      reject();
+      return;
+    }
+    clientCollection
+      .findOne({ company: this.data })
+      .then((userDocument) => {
+        resolve(userDocument);
+      })
+      .catch((e) => {
+        reject();
+      });
   });
 };
 

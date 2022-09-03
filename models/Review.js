@@ -51,4 +51,30 @@ Review.prototype.create = function () {
   });
 };
 
+Review.getPrivateFeedback = function (company) {
+  return new Promise(async (resolve, reject) => {
+    let reviews = await reviewsCollection
+      .aggregate([
+        { $match: { company } },
+        { $sort: { createdDate: 1 } },
+        // {
+        //   $lookup: {
+        //     from: "reviews",
+        //     localField: "company",
+        //     foreignField: "company",
+        //     as: "privateFeedback",
+        //   },
+        // },
+        // {project: {
+        //     title: 1,
+        //     body: 1,
+        //     createdDate: 1,
+        //     Author: {$arrayElemAt: ["$authorDocument", 0]}
+        // }}
+      ])
+      .toArray();
+    resolve(reviews);
+  });
+};
+
 module.exports = Review;

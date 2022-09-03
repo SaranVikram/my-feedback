@@ -7,7 +7,7 @@ const fileStorageEngine = multer.diskStorage({
     cb(null, "./public/client-logos"); //important this is a direct path from our current file to storage location
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "--" + file.originalname.trim());
+    cb(null, Date.now() + "--" + file.originalname);
   },
 });
 

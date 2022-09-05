@@ -5,7 +5,11 @@ const reviewController = require("./controllers/reviewController");
 const customerController = require("./controllers/customerController");
 const cors = require("cors");
 
-apiRouter.use(cors());
+apiRouter.use(
+  cors({
+    origin: "https://main--my-feedbackk.netlify.app",
+  })
+);
 
 apiRouter.post("/checkToken", postController.checkToken);
 apiRouter.post("/login", postController.apiLogin);

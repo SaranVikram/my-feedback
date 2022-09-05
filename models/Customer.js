@@ -26,10 +26,6 @@ Customer.prototype.checkinCleanUp = function () {
       allowedTags: [],
       allowedAttributes: {},
     }),
-    amount: sanitizeHTML(this.data.amount.trim(), {
-      allowedTags: [],
-      allowedAttributes: {},
-    }),
     createdDate: new Date(),
     companyId: ObjectID(this.userid),
   };
@@ -45,6 +41,26 @@ Customer.prototype.checkinValidate = function () {
 };
 
 Customer.prototype.checkin = function () {
+  return new Promise((resolve, reject) => {
+    this.checkinCleanUp();
+    this.checkinValidate();
+    if (!this.errors.length) {
+      customersCollection
+        .insertOne(this.data)
+        .then((info) => {
+          resolve(info.ops[0]);
+        })
+        .catch((e) => {
+          this.errors.push("please try again later");
+          reject(this.errors);
+        });
+    } else {
+      reject(this.errors);
+    }
+  });
+};
+
+Customer.prototype.maheshCheckin = function () {
   return new Promise((resolve, reject) => {
     this.checkinCleanUp();
     this.checkinValidate();

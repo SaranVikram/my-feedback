@@ -39,7 +39,8 @@ exports.apiLogin = function (req, res) {
         token: jwt.sign(
           {
             _id: client.data._id,
-            username: client.data.name,
+            company: client.data.company,
+            shortLink: client.data.shortLink,
           },
           process.env.JWTSECRET,
           { expiresIn: tokenLasts }

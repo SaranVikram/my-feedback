@@ -29,7 +29,7 @@ app.use(function (req, res, next) {
 const router = require("./router");
 
 // This middleware is used to enable Cross Origin Resource Sharing This sets Headers to allow access to our client application
-app.use(cors());
+// app.use(cors());
 
 app.use(express.static("public"));
 app.set("views", "views");

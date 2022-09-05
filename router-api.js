@@ -8,7 +8,7 @@ const cors = require("cors");
 apiRouter.use(
   cors({
     origin: "https://app.my-feedback.in",
-    credentials: true,
+    optionsSuccessStatus: 200,
   })
 );
 

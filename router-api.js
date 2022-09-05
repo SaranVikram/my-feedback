@@ -8,6 +8,7 @@ const cors = require("cors");
 apiRouter.use(
   cors({
     origin: "https://my-feedbackk.netlify.app/",
+    credentials: true,
   })
 );
 

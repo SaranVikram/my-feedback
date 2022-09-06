@@ -3,12 +3,12 @@ const express = require("express");
 const session = require("express-session");
 const flash = require("connect-flash");
 const MongoStore = require("connect-mongo")(session);
-const cors = require("cors");
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// api specific routes
 app.use("/api", require("./router-api"));
 
 let sessionOptions = session({
@@ -26,11 +26,9 @@ app.use(function (req, res, next) {
   next();
 });
 
+//routing for server side
+
 const router = require("./router");
-
-// This middleware is used to enable Cross Origin Resource Sharing This sets Headers to allow access to our client application
-// app.use(cors());
-
 app.use(express.static("public"));
 app.set("views", "views");
 app.set("view engine", "ejs");

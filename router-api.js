@@ -1,5 +1,4 @@
 const apiRouter = require("express").Router();
-const userController = require("./controllers/userController");
 const postController = require("./controllers/postController");
 const reviewController = require("./controllers/reviewController");
 const customerController = require("./controllers/customerController");
@@ -13,7 +12,14 @@ apiRouter.use(
 );
 
 apiRouter.post("/checkToken", postController.checkToken);
-apiRouter.post("/login", postController.apiLogin);
+apiRouter.post(
+  "/login",
+  cors({
+    origin: "https://app.my-feedback.in",
+    optionsSuccessStatus: 200,
+  }),
+  postController.apiLogin
+);
 apiRouter.post(
   "/customer/checkin",
   postController.apiMustBeLoggedIn,

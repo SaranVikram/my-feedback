@@ -4,15 +4,24 @@ const reviewController = require("./controllers/reviewController");
 const customerController = require("./controllers/customerController");
 const cors = require("cors");
 
-apiRouter.use(
-  cors({
-    origin: "https://app.my-feedback.in",
-    optionsSuccessStatus: 200,
-  })
-);
+// apiRouter.use(
+//   cors({
+//     origin: "https://app.my-feedback.in",
+//     optionsSuccessStatus: 200,
+//   })
+// );
 
 apiRouter.post("/checkToken", postController.checkToken);
-apiRouter.post("/login", cors(), postController.apiLogin);
+apiRouter.post(
+  "/login",
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  }),
+  postController.apiLogin
+);
 apiRouter.post(
   "/customer/checkin",
   postController.apiMustBeLoggedIn,

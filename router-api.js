@@ -2,7 +2,6 @@ const apiRouter = require("express").Router();
 const postController = require("./controllers/postController");
 const reviewController = require("./controllers/reviewController");
 const customerController = require("./controllers/customerController");
-const cors = require("cors");
 
 // apiRouter.use(
 //   cors({

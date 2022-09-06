@@ -9,9 +9,18 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(cors());
+const corsConfig = {
+  origin: ["https://app.my-feedback.in", "http://localhost:3000"],
+  credentials: true,
+  methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+};
+
+app.use(cors(corsConfig));
 // api specific routes
 app.use("/api", require("./router-api"));
+
+//enabling pre-flight
+app.options("*", cors(corsConfig));
 
 let sessionOptions = session({
   secret: "javascript is so cool",

@@ -3,11 +3,13 @@ const express = require("express");
 const session = require("express-session");
 const flash = require("connect-flash");
 const MongoStore = require("connect-mongo")(session);
+const cors = require("cors");
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.use(cors());
 // api specific routes
 app.use("/api", require("./router-api"));
 

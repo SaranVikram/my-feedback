@@ -10,9 +10,9 @@ const cors = require("cors");
 //     optionsSuccessStatus: 200,
 //   })
 // );
-apiRouter.options("*", cors());
+
 apiRouter.post("/checkToken", postController.checkToken);
-apiRouter.post("/login", cors(), postController.apiLogin);
+apiRouter.post("/login", postController.apiLogin);
 apiRouter.post(
   "/customer/checkin",
   postController.apiMustBeLoggedIn,

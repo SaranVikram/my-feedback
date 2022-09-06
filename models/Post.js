@@ -157,7 +157,6 @@ Client.prototype.login = function () {
       .then((attemptedUser) => {
         if (attemptedUser && this.data.password === attemptedUser.Mobile) {
           this.data = attemptedUser;
-          console.log(attemptedUser);
           this.getAvatar();
           resolve("Congrats!");
         } else {

@@ -32,10 +32,10 @@ exports.viewSingle = async function (req, res) {
 
 exports.apiLogin = function (req, res) {
   let client = new Client(req.body);
-  console.log(req.body);
   client
     .login()
     .then(function (result) {
+      console.log(client.data);
       res.json({
         token: jwt.sign(
           {
@@ -53,7 +53,7 @@ exports.apiLogin = function (req, res) {
       });
     })
     .catch(function (e) {
-      res.json(false);
+      res.json(e);
     });
 };
 

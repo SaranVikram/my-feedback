@@ -12,14 +12,7 @@ apiRouter.use(
 );
 
 apiRouter.post("/checkToken", postController.checkToken);
-apiRouter.post(
-  "/login",
-  cors({
-    origin: "https://app.my-feedback.in",
-    optionsSuccessStatus: 200,
-  }),
-  postController.apiLogin
-);
+apiRouter.post("/login", cors(), postController.apiLogin);
 apiRouter.post(
   "/customer/checkin",
   postController.apiMustBeLoggedIn,

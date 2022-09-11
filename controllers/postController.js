@@ -35,7 +35,6 @@ exports.apiLogin = function (req, res) {
   client
     .login()
     .then(function (result) {
-      console.log(client.data);
       res.json({
         token: jwt.sign(
           {
@@ -53,7 +52,7 @@ exports.apiLogin = function (req, res) {
       });
     })
     .catch(function (e) {
-      res.json(e);
+      res.json(false);
     });
 };
 
@@ -61,6 +60,7 @@ exports.apiMustBeLoggedIn = function (req, res, next) {
   try {
     req.apiClient = jwt.verify(req.body.token, process.env.JWTSECRET);
     next();
+    return;
   } catch (error) {
     res.status(500).send("sorry, you must provide valid token");
   }

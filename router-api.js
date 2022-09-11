@@ -2,6 +2,7 @@ const apiRouter = require("express").Router();
 const postController = require("./controllers/postController");
 const reviewController = require("./controllers/reviewController");
 const customerController = require("./controllers/customerController");
+const textLocal = require("./middleware/textlocal");
 
 // apiRouter.use(
 //   cors({
@@ -24,5 +25,8 @@ apiRouter.get(
   postController.ifClientExists,
   reviewController.apiGetReviewsByCompanyName
 );
+
+//text local trail
+apiRouter.post("/textlocal", textLocal.textLocalSMS);
 
 module.exports = apiRouter;

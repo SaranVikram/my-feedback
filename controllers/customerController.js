@@ -23,7 +23,7 @@ exports.createCustomerCheckin = function (req, res) {
           })
           .then((message) => {
             console.log(message.sid);
-            res.json(message.sid);
+            res.json("Message is succesfully sent");
           })
           .catch((e) => {
             res.json(e.code);
@@ -38,7 +38,7 @@ exports.createCustomerCheckin = function (req, res) {
           })
           .then((message) => {
             console.log(message.sid);
-            res.json(message.sid);
+            res.json("Message is succesfully sent");
           })
           .catch((e) => {
             res.json(e.code);

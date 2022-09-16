@@ -32,6 +32,7 @@ exports.viewSingle = async function (req, res) {
 
 exports.apiLogin = function (req, res) {
   let client = new Client(req.body);
+  console.log(req.body);
   client
     .login()
     .then(function (result) {

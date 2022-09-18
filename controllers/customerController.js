@@ -23,10 +23,12 @@ exports.createCustomerCheckin = function (req, res) {
           })
           .then((message) => {
             console.log(message.sid);
-            res.json("Message is succesfully sent");
+            res.status(200).json({ message: "Message is succesfully sent" });
           })
           .catch((e) => {
-            res.json(e.code);
+            res
+              .status(400)
+              .json({ message: `Cannot send message to ${info.number}` });
           })
           .done();
       } else {
@@ -38,10 +40,12 @@ exports.createCustomerCheckin = function (req, res) {
           })
           .then((message) => {
             console.log(message.sid);
-            res.json("Message is succesfully sent");
+            res.status(200).json({ message: "Message is succesfully sent" });
           })
           .catch((e) => {
-            res.json(e.code);
+            res
+              .status(400)
+              .json({ message: `Cannot send message to ${info.number}` });
           })
           .done();
       }
